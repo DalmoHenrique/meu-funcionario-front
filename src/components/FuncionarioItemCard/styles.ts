@@ -9,7 +9,7 @@ export const Container = styled.li`
 
     div:not(#nome){
         display: flex;
-        background-color: gray;
+        background-color: #3b96df;
         width: 99%;
         padding: 12px 10px;
         border-radius: 5px;
@@ -26,8 +26,20 @@ export const Container = styled.li`
     }
 
     h3{
+        margin-top: 5px;
+        margin-left: 10px;
+        margin-right: 10px;
         color: white;
         text-decoration: none;
     } 
+
+    img {
+        height: 30px;
+        width: 30px;
+    }
+
+    #nome{
+        display: flex;
+    }
 
 `;

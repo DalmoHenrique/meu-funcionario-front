@@ -1,12 +1,23 @@
 import styled from 'styled-components';
 
 export const HeaderContainer = styled.div`
-    
+    display: flex;
+    justify-content: center;
+     h1{
+        font-size: 26px;
+        font-weight: 500;
+        color: ${props => props.theme.colors.secondary};
+    } 
+`;
 
+export const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 `;
 
 export const Fields = styled.div`
-    margin-top: 30px;
+    /* margin-top: 30px;
     display: flex;
     width: 100%;
     flex: 1;
@@ -42,36 +53,15 @@ export const Fields = styled.div`
             }
 
         }
-    }
+    } */
 `;
 
 export const Formulario = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    margin: auto;
-    border-radius: 30px;
-    width: 50%;
-    height: 80%;
-    background-color: white;
-    border-bottom: 10px solid ${props => props.theme.colors.success};
-    border-right: 10px solid ${props => props.theme.colors.success};    
 
-    overflow-y: auto;
-
-    /* Utilizando do webkit para personalizar o scroll */
-    ::-webkit-scrollbar{
-        width: 5px;
-    }
-    ::-webkit-scrollbar-thumb{
-        /* background-color: ${props => props.theme.colors.primary}; */
-        border-radius: 10px;
-    }
 `;
 
 export const Container = styled.div`
-    height: 100%;
+    /* height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -122,11 +112,11 @@ export const Container = styled.div`
             color: white;
         }
 
-    }
+    } */
 `;
 
 export const AComponent = styled.a`
-    border-radius: 5px;
+    /* border-radius: 5px;
     text-decoration: none;
     margin-top: 80px;
     margin-bottom: 20px;
@@ -146,5 +136,5 @@ export const AComponent = styled.a`
     h2{
         margin-top: 5px;
         text-align: center;
-    }
+    } */
 `;

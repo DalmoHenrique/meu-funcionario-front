@@ -5,5 +5,5 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    color: ${props => props.theme.colors.white};
+    color: ${props => props.theme.colors.secondary};
 `;

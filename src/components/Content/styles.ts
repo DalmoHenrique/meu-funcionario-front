@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Container = styled.div`
     grid-area: CT;
     color: ${props => props.theme.colors.white};
-    background-color: ${props => props.theme.colors.secondary};
 
     padding: 25px;
 
@@ -22,3 +21,20 @@ export const Container = styled.div`
     }
 
 `;
+
+export const BackgroundList = styled.div`
+    background-color: #f6f6f6;
+    padding: 20px;
+    border-radius: 2px;
+    border-top: 3px solid rgba(150, 150, 150, .4);
+    border-right: 3px solid rgba(150, 150, 150, .4);
+    border-left: 3px solid rgba(150, 150, 150, .4);
+    border-bottom: 6px solid rgba(150, 150, 150, .4);
+
+    
+    border-right: 4px solid rgba(150, 150, 150, .4);
+    border-bottom: 7px solid rgba(150, 150, 150, .4);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+`;
+

@@ -2,13 +2,13 @@ export default {
     title: 'estiloDefault',
 
     colors: {
-        primary: '#191970',
-        secondary: '#101045',
+        primary: '#1863f4',
+        secondary: '#24282b',
         tertiary: '#1B1F38',
 
         white: '#FFF',
         black: '#000',
-        gray: '#BFBFBF',
+        gray: '#f7f7f7',
 
         success: '#4E41F0',
         info: '#F7931B',

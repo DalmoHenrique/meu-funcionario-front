@@ -48,7 +48,7 @@ const FuncionarioList: React.FC<IRouteParams> = ({ match }) => {
                         <Content>
                             <FuncionarioItemCard
                                 nome={item.nome}
-                                salario={item.salario}
+                                salario={`R$ ${String(item.salario).replace(".", ",")}`}
                             />
                         </Content>
                     </LinkItem>

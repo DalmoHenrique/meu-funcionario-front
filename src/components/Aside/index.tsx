@@ -9,6 +9,7 @@ const Aside: React.FC = () => {
         <Container>
             <Header>
                 <LogImg src={logoImg} alt="Logo Funcionário" />
+                <h3>RCKYD</h3>
             </Header>
 
             <AsideContent>

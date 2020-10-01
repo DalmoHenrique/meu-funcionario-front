@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import backgroundImage from '../../assets/background-image.jpg';
+
 /**
      * Layout
      * MH = Main Header
@@ -8,6 +10,12 @@ import styled from 'styled-components';
     */
 
 export const Grid = styled.div`
+
+    background-image: url('${backgroundImage}');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
     display: grid;
     /* Primeira coluna com um tamanho de 250px e irá auto preencher com o resto */
     grid-template-columns: 250px auto;
