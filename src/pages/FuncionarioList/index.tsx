@@ -30,30 +30,25 @@ const FuncionarioList: React.FC<IRouteParams> = ({ match }) => {
             console.log(r.data);
         })
 
-        // const { type } = match.params;
-        // if (type === 'cadastrar') {
-        //     console.log('oi');
-        // } else if (type === undefined) {
-        //     console.log('padrão');
-        // }
-
     }, []);
 
 
     return (
         <Container>
-            {funcionarioList.map(item => {
-                return (
-                    <LinkItem key={item.id} href={`/consultar/${item.id}`}>
-                        <Content>
-                            <FuncionarioItemCard
-                                nome={item.nome}
-                                salario={`R$ ${String(item.salario).replace(".", ",")}`}
-                            />
-                        </Content>
-                    </LinkItem>
-                )
-            })}
+            {funcionarioList
+                .sort((a, b) => a.nome.localeCompare(b.nome))
+                .map(item => {
+                    return (
+                        <LinkItem key={item.id} href={`/consultar/${item.id}`}>
+                            <Content>
+                                <FuncionarioItemCard
+                                    nome={item.nome}
+                                    salario={`R$ ${String(item.salario).replace(".", ",")}`}
+                                />
+                            </Content>
+                        </LinkItem>
+                    )
+                })}
         </Container>
     );
 }

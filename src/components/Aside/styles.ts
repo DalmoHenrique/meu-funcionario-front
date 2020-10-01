@@ -4,14 +4,13 @@ export const Container = styled.div`
     grid-area: AS;
     color: ${props => props.theme.colors.white};
     background-color: ${props => props.theme.colors.gray}; 
-    border-right: 1px solid #c3c3c3;
-
 `;
 
 export const Header = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 100px;
     h3{
         color: black;
         font-size: 12px;
@@ -22,37 +21,66 @@ export const Header = styled.div`
 `;
 
 export const LogImg = styled.img`
-    margin-top: 10px;
     width: 60px;
     height: 60px;
     display: flex;
+    cursor: pointer;
 `;
 
 export const AsideContent = styled.div`
-    margin-top: 50%;
-    width: 100%;
-    height: 200px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    height: 100%;
+    justify-content: space-between;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; */
 `;
 
 export const AsideItemLink = styled.a`
+    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
     text-decoration: none;
+    width: 100%;
+
     > h3 {
         
         font-weight: bold;
-        font-size: px;
         color: ${props => props.theme.colors.secondary};
 
-        /* Realizar a animação caso o cursor seja colocado em um dos itens da lista */
-        cursor: pointer;
-        transition: all .3s;
-
-        &:hover{
-            color: ${props => props.theme.colors.primary};
-        }
 
     }
+
+    transition: all .3s;
+
+    &:hover{
+        background-color: #f1f3f5;
+    }
+
+    
+`;
+
+export const Signature = styled.div`
+    h6{
+        color: ${props => props.theme.colors.black};
+    }
+    margin-bottom: 20px;
+`;
+
+export const MenuOption = styled.div`
+    display: flex;
+    
+    width: 250px;
+    height: 50px;
+    transition: all .3s;
+
+    &:hover{
+        background-color: #f1f3f5;
+    }
+`;
+
+export const AsideHeader = styled.div`
 `;

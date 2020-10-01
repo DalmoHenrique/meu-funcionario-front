@@ -20,7 +20,7 @@ const MainHeader: React.FC = () => {
 
             <Profile>
                 <Welcome>Olá, {emoji}</Welcome>
-                <Description>Gerencie seus Funcionários aqui!</Description>
+                <Description>Bem vindo ao sistema RCKYD!</Description>
             </Profile>
 
         </Container>

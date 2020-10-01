@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { Container, HeaderContainer, Formulario, Fields, AComponent, ButtonContainer } from './styles';
+import { Container, HeaderContainer, Formulario, ButtonContainer } from './styles';
 
-import { InputGroup, Input, Select, Button, Dialog, Text, useToast, useTheme } from 'sancho';
+import { InputGroup, Input, Select, Button } from 'sancho';
 
 import axios from 'axios';
 
@@ -35,6 +35,7 @@ const CadastroFuncionario: React.FC = () => {
 
     const [openSucesso, setOpenSucesso] = useState(false);
     const [openFalha, setOpenFalha] = useState(false);
+    const [openFalhaBanco, setOpenFalhaBanco] = useState(false);
 
     const abrirDialogPreencherDados = () => {
         setOpenFalha(true);
@@ -66,8 +67,17 @@ const CadastroFuncionario: React.FC = () => {
     const fecharDialogSucesso = () => {
         setOpenSucesso(false);
         const path = '/';
+        console.log(history);
         // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
         history.push(path);
+    };
+
+    const abrirDialogFalhaBanco = () => {
+        setOpenFalhaBanco(true);
+    };
+
+    const fecharDialogFalhaBanco = () => {
+        setOpenFalhaBanco(false);
     };
 
     const realizarCadastro = () => {
@@ -84,7 +94,7 @@ const CadastroFuncionario: React.FC = () => {
                 }).then(resp => {
                     abrirDialogSucesso();
                 }, (error) => {
-                    alert('Falha ao conectar no banco de dados. Entre em contato com o Suporte');
+                    abrirDialogFalhaBanco();
                 });
             } else {
                 abrirDialogPreencherDados();
@@ -165,6 +175,29 @@ const CadastroFuncionario: React.FC = () => {
                     </DialogContent>
                     <DialogActions>
                         <ButtonMU onClick={fecharDialogPreencherDados} color="primary" autoFocus>
+                            OK
+                        </ButtonMU>
+                    </DialogActions>
+                </DialogMU>
+
+
+                {/* Dialog para caso a API não esteja conectando para realizar as requisições */}
+                <DialogMU
+                    open={openFalhaBanco}
+                    onClose={fecharDialogFalhaBanco}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Não foi possível realizar o cadastro"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Não foi possível conectar ao banco de dados. Entre em contato com o Suporte
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <ButtonMU onClick={fecharDialogFalhaBanco} color="primary" autoFocus>
                             OK
                         </ButtonMU>
                     </DialogActions>

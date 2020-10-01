@@ -1,10 +1,19 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { Container, HeaderContainer, Formulario, Fields, AComponent } from './styles';
+import { Container, HeaderContainer, Formulario, Fields, AComponent, ButtonContainer } from './styles';
+
+import { InputGroup, Input, Select, Button, Dialog, Text, useToast, useTheme } from 'sancho';
 
 import axios from 'axios';
+
+import ButtonMU from '@material-ui/core/Button';
+import DialogMU from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 interface IRouteConsultaParams {
     match: {
@@ -25,9 +34,97 @@ interface IFuncionario {
 
 const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
 
+    /**
+     * Setando todos os useState para alterar os estados dos campos no formulário, sendo:
+     * - Campos normais dos formulários para serem preenchidos
+     * - 'alert' de erro caso o campo não seja preenchido, dando erro e pedindo para o usuário preencher aquele campo
+     */
+    const [idFunc, setIdFunc] = useState('');
+    const [nome, setNome] = useState('');
+    const [nomeError, setNomeError] = useState('');
+    const [endereco, setEndereco] = useState('');
+    const [enderecoError, setEnderecoError] = useState('');
+    const [salario, setSalario] = useState('');
+    const [salarioError, setSalarioError] = useState('');
+    const [genero, setGenero] = useState('');
+    const [data, setData] = useState('');
+    const [dataError, setDataError] = useState('');
+    const history = useHistory();
+
+    const [openSucessoAlteracao, setOpenSucessoAlteracao] = useState(false);
+    const [openSucessoExclusao, setOpenSucessoExclusao] = useState(false);
+    const [openFalha, setOpenFalha] = useState(false);
+    const [openFalhaBanco, setOpenFalhaBanco] = useState(false);
+
     const { id } = match.params;
     const [funcionario, setFuncionario] = useState<IFuncionario>();
 
+    const abrirDialogPreencherDados = () => {
+        setOpenFalha(true);
+    };
+
+    const fecharDialogPreencherDados = () => {
+        setOpenFalha(false);
+        setNomeError('');
+        setEnderecoError('');
+        setSalarioError('');
+        setDataError('');
+        if (nome === '') {
+            setNomeError("Este campo é obrigatório");
+        }
+        if (endereco === '') {
+            setEnderecoError("Este campo é obrigatório");
+        }
+        if (salario === '') {
+            setSalarioError("Este campo é obrigatório");
+        }
+        if (data === '') {
+            setDataError("Este campo é obrigatório");
+        }
+    };
+    const abrirDialogSucessoAlteracao = () => {
+        setOpenSucessoAlteracao(true);
+    };
+
+    const fecharDialogSucessoAlteracao = () => {
+        setOpenSucessoAlteracao(false);
+        const path = '/';
+        // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
+        history.push(path);
+    };
+
+    const abrirDialogSucessoExclusao = () => {
+        setOpenSucessoExclusao(true);
+    };
+
+    const fecharDialogSucessoExclusao = () => {
+
+        {
+            let url = `http://localhost:5005/api/funcionario/deletar/${id}`;
+            axios.delete(url).then(resp => {
+                setOpenSucessoExclusao(false);
+                const path = '/';
+                // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
+                history.push(path);
+            }, (error) => {
+                abrirDialogFalhaBanco();
+            });
+
+        }
+
+    };
+
+    const fecharDialogCanceladoExclusao = () => {
+        setOpenSucessoExclusao(false);
+    };
+
+    const abrirDialogFalhaBanco = () => {
+        setOpenFalhaBanco(true);
+    };
+
+    const fecharDialogFalhaBanco = () => {
+        setOpenFalhaBanco(false);
+    };
 
     // Neste useEffect será salvo o funcionário adquirido no JSON no seu próprio useState com nome de 'funcionario'
     useEffect(() => {
@@ -38,23 +135,7 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
             console.log(r.data);
         })
 
-        // const { type } = match.params;
-        // if (type === 'cadastrar') {
-        //     console.log('oi');
-        // } else if (type === undefined) {
-        //     console.log('padrão');
-        // }
-
     }, []);
-
-    // Setando todos os useState para alterar os estados dos campos no formulário
-    const [idFunc, setIdFunc] = useState('');
-    const [nome, setNome] = useState('');
-    const [endereco, setEndereco] = useState('');
-    const [salario, setSalario] = useState('');
-    const [genero, setGenero] = useState('');
-    const [data, setData] = useState('');
-    const history = useHistory();
 
     // Neste outro useEffect, precisaremos exibir o funcionário só quando ele for true (ou quando for diferente de undefined ou null), pois é necessário aguardar ele
     // ser renderizado. Desta forma só será executado as instruções depois que o funcionario for true
@@ -74,70 +155,160 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
     const realizarAlteracao = () => {
 
         {
-            // Validação de todos os campos
             let url = `http://localhost:5005/api/funcionario/alterar/${id}`;
-            console.log(url);
-            axios.put(url, {
-                id: Number(id),
-                nome: nome,
-                endereco: endereco,
-                dataNascimento: data,
-                salario: parseFloat(salario),
-                genero: genero
-            }).then(resp => {
-                alert('Dados alterados com sucesso! :) ');
-                const path = '/';
-                // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
-                history.push(path);
-            }, (error) => {
-                alert('Falha na alteração. Tente novamente mais tarde');
-            });
+            // Validação de todos os campos
+            if (nome !== '' && endereco !== '' && salario !== '' && data !== '') {
+                axios.put(url, {
+                    id: Number(id),
+                    nome: nome,
+                    endereco: endereco,
+                    dataNascimento: data,
+                    salario: parseFloat(salario),
+                    genero: genero
+                }).then(resp => {
+                    abrirDialogSucessoAlteracao();
+                }, (error) => {
+                    abrirDialogFalhaBanco();
+                });
+            } else {
+                abrirDialogPreencherDados();
+            }
+
         }
 
     }
 
     const realizarExclusao = () => {
-
-        {
-            // Validação de todos os campos
-            let url = `http://localhost:5005/api/funcionario/deletar/${id}`;
-            console.log(url);
-            axios.delete(url).then(resp => {
-                alert('Cadastro excluído com sucesso! :) ');
-                const path = '/';
-                // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
-                history.push(path);
-            }, (error) => {
-                alert('Falha na exclusão. Tente novamente mais tarde');
-            });
-        }
-
+        abrirDialogSucessoExclusao();
     }
-
 
     return (
         <Container>
             <HeaderContainer>
-                <h1>Consulta</h1>
+                <h1>Dados da Consulta</h1>
             </HeaderContainer>
+
             <Formulario>
-                <Fields>
-                    <input type="text" value={nome} name="nome" onChange={e => setNome((e.target.value))} required />
-                    <input type="text" value={endereco} onChange={e => setEndereco((e.target.value))} name="endereco" />
-                    <input type="number" value={salario} onChange={e => setSalario((e.target.value))} min="0" step=".01" name="salario" />
-                    <select value={genero} name="genero" onChange={e => setGenero((e.target.value))}>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                    </select>
-                    <input type="text" id="dataNascimentoLabel" name="dataNascimentoLabel" disabled={true} />
-                    <input type="date" id="dataNascimento" value={data} onChange={e => setData((e.target.value))} name="dataNascimento" />
-                </Fields>
-                <AComponent onClick={realizarAlteracao}>
-                    <h2>ALTERAR</h2>
-                </AComponent>
-                <AComponent onClick={realizarExclusao}>
-                    <h2>EXCLUIR</h2>
-                </AComponent>
+
+                {/* Inputs do formulário */}
+                <InputGroup error={nomeError} label="Nome">
+                    <Input value={nome} onChange={e => setNome((e.target.value))} placeholder="Carlos Eduardo de Almeida" />
+                </InputGroup>
+                <InputGroup error={enderecoError} label="Endereço">
+                    <Input value={endereco} onChange={e => setEndereco((e.target.value))} placeholder="Rua Emílio Santana das Cruzes, 421" />
+                </InputGroup>
+                <InputGroup error={salarioError} label="Salário">
+                    <Input value={salario} onChange={e => setSalario((e.target.value))} type="number" min="0" step=".01" placeholder="1523,48" />
+                </InputGroup>
+                <InputGroup label="Gênero">
+                    <Select value={genero} onChange={e => setGenero((e.target.value))}>
+                        <option>Masculino</option>
+                        <option>Feminino</option>
+                    </Select>
+                </InputGroup>
+                <InputGroup error={dataError} label="Data de Nascimento">
+                    <Input type="date" value={data} onChange={e => setData((e.target.value))} />
+                </InputGroup>
+
+                <ButtonContainer>
+                    <Button onClick={realizarAlteracao} intent="primary">Alterar Cadastro</Button>
+                    <Button onClick={realizarExclusao} intent="danger">Excluir Cadastro</Button>
+                </ButtonContainer>
+
+
+                {/* Dialog para caso der o submit com sucesso */}
+                <DialogMU
+                    open={openSucessoAlteracao}
+                    onClose={fecharDialogSucessoAlteracao}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Sucesso!"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Alteração realizada com sucesso
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <ButtonMU onClick={fecharDialogSucessoAlteracao} color="primary" autoFocus>
+                            OK
+                        </ButtonMU>
+                    </DialogActions>
+                </DialogMU>
+
+                {/* Dialog para caso o formulário não esteja preenchido por completo */}
+                <DialogMU
+                    open={openFalha}
+                    onClose={fecharDialogPreencherDados}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Não foi possível realizar a alteração"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Formulário inconsistente. Por favor preencha todos os campos
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <ButtonMU onClick={fecharDialogPreencherDados} color="primary" autoFocus>
+                            OK
+                        </ButtonMU>
+                    </DialogActions>
+                </DialogMU>
+
+                {/* Dialog para questionar se realmente deseja excluir o funcionário */}
+                <DialogMU
+                    open={openSucessoExclusao}
+                    onClose={fecharDialogCanceladoExclusao}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Aviso:"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Você realmente deseja excluir este funcionário?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <ButtonMU onClick={fecharDialogSucessoExclusao} color="primary" autoFocus>
+                            Sim
+                        </ButtonMU>
+                        <ButtonMU onClick={fecharDialogCanceladoExclusao} color="primary" autoFocus>
+                            Não
+                        </ButtonMU>
+                    </DialogActions>
+                </DialogMU>
+
+
+                {/* Dialog para caso a API não esteja conectando para realizar as requisições */}
+                <DialogMU
+                    open={openFalhaBanco}
+                    onClose={fecharDialogFalhaBanco}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Não foi possível realizar o cadastro"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Não foi possível conectar ao banco de dados. Entre em contato com o Suporte
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <ButtonMU onClick={fecharDialogFalhaBanco} color="primary" autoFocus>
+                            OK
+                        </ButtonMU>
+                    </DialogActions>
+                </DialogMU>
+
+
             </Formulario>
         </Container>
     );

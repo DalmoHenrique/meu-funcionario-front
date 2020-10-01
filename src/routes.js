@@ -9,16 +9,19 @@ import ConsultaFuncionario from './pages/ConsultaFuncionario';
 
 const Routes = () => {
     return (
-        <Layout>
+
+        <BrowserRouter >
             {/* Criação das rotas para que faça a navegação entre as páginas */}
-            <BrowserRouter>
+            <Layout>
                 <Switch>
                     <Route path="/" exact component={FuncionarioList} />
                     <Route path="/cadastrar" exact component={CadastroFuncionario} />
                     <Route path="/consultar/:id" exact component={ConsultaFuncionario} />
                 </Switch>
-            </BrowserRouter>
-        </Layout>
+
+            </Layout>
+        </BrowserRouter>
+
     )
 }
 

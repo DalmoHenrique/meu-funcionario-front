@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const Container = styled.div`
     grid-area: CT;
     color: ${props => props.theme.colors.white};
-
+    border-left: 1px solid #c3c3c3;
     padding: 25px;
+    box-shadow: inset 0 0 1px gray;
 
     /* Irá descontar o valor que tem do Content pelo valor do header do MainHeader. Para que caiba corretamente no grid */
     height: calc(100vh - 70px);
@@ -26,14 +27,7 @@ export const BackgroundList = styled.div`
     background-color: #f6f6f6;
     padding: 20px;
     border-radius: 2px;
-    border-top: 3px solid rgba(150, 150, 150, .4);
-    border-right: 3px solid rgba(150, 150, 150, .4);
-    border-left: 3px solid rgba(150, 150, 150, .4);
-    border-bottom: 6px solid rgba(150, 150, 150, .4);
-
-    
-    border-right: 4px solid rgba(150, 150, 150, .4);
-    border-bottom: 7px solid rgba(150, 150, 150, .4);
+    box-shadow:  0 0 1em gray;
     -webkit-background-clip: padding-box; /* for Safari */
     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
 `;
