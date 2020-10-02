@@ -118,7 +118,6 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
         setOpenSucessoExclusao(false);
         const path = '/';
         // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
-        console.log(history);
         history.push(path);
     };
 
@@ -164,10 +163,8 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
      */
     useEffect(() => {
         let url = `http://localhost:5005/api/funcionario/consultar/${id}`;
-        console.log(url);
         axios.get(url).then((r) => {
             setFuncionario(r.data);
-            console.log(r.data);
         })
         let newDate = new Date()
         let date = newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
@@ -184,9 +181,7 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
             setNome(funcionario.nome);
             setEndereco(funcionario.endereco);
             setSalario(String(funcionario.salario));
-            // TODO ainda necessário setar corretamente o <select>
             setGenero(funcionario.genero);
-            // console.log(String(funcionario.dataNascimento).substring(0, 10));
             setData(String(funcionario.dataNascimento).substring(0, 10));
         }
     }, [funcionario]);

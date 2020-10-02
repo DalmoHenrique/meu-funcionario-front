@@ -73,7 +73,6 @@ const CadastroFuncionario: React.FC = () => {
     const fecharDialogSucesso = () => {
         setOpenSucesso(false);
         const path = '/';
-        console.log(history);
         // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
         history.push(path);
     };

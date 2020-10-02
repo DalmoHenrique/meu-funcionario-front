@@ -19,7 +19,6 @@ const FuncionarioList: React.FC = () => {
         let url = 'http://localhost:5005/api/funcionario';
         axios.get(url).then((r) => {
             setFuncionarioList(r.data);
-            console.log(r.data);
         })
 
     }, []);
@@ -29,7 +28,6 @@ const FuncionarioList: React.FC = () => {
      * será renderizado na tela a listagem dos funcionários com base no layout dos cartões criados no FuncionarioItemCard
      */
     if (funcionarioList.length > 0) {
-        console.log(`Tamanho funcionário: ${funcionarioList.length} agora populado`);
         return (
 
             // Função sort() para ordenar em ordem alfabética a listagem dos funcionários na tela
@@ -54,7 +52,6 @@ const FuncionarioList: React.FC = () => {
             </Container>
         );
     } else {
-        console.log(`Tamanho funcionário: ${funcionarioList.length} mas executando msm assim`);
         return (
             <Container>
                 {
