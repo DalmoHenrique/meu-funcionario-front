@@ -8,6 +8,7 @@ import Content from '../Content'
 
 const Layout: React.FC = ({ children }) => {
     return (
+        // Posicionamento de cada component no grid, MainHeader, Aside e Content
         <Grid>
             <MainHeader />
             <Aside />

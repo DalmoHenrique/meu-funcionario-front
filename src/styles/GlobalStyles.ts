@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-
+// Estilização padrão do site que serão os estilos globais
 export default createGlobalStyle`
     * {
         margin: 0;

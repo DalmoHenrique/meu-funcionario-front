@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     grid-area: CT;
-    
     color: ${props => props.theme.colors.white};
     border-left: 1px solid #c3c3c3;
     padding: 25px;
@@ -21,7 +20,6 @@ export const Container = styled.div`
         background-color: ${props => props.theme.colors.primary};
         border-radius: 10px;
     }
-
 `;
 
 export const BackgroundList = styled.div`
@@ -33,4 +31,3 @@ export const BackgroundList = styled.div`
     -webkit-background-clip: padding-box; /* for Safari */
     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
 `;
-

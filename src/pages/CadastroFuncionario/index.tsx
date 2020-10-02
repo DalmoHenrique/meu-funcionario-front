@@ -38,18 +38,12 @@ const CadastroFuncionario: React.FC = () => {
     const [openFalhaBanco, setOpenFalhaBanco] = useState(false);
 
 
-    useEffect(() => {
-        let newDate = new Date()
-        let date = newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
-        let month = newDate.getMonth() + 1 < 10 ? `0${newDate.getMonth() + 1}` : newDate.getMonth() + 1;
-        let year = newDate.getFullYear();
-        setDataAtual(`${year}${'-'}${month < 10 ? `0${month}` : `${month}`}${'-'}${date}`);
-    }, []);
-
+    // Dialog de abertura caso o usuário não preencha todos os dados na tela
     const abrirDialogPreencherDados = () => {
         setOpenFalha(true);
     };
 
+    // Dialog de abertura caso o usuário não preencha todos os dados na tela
     const fecharDialogPreencherDados = () => {
         setOpenFalha(false);
         setNomeError('');
@@ -69,10 +63,13 @@ const CadastroFuncionario: React.FC = () => {
             setDataError("Este campo é obrigatório");
         }
     };
+
+    // Dialog de abertura caso o usuário cadastre com sucesso o funcionário
     const abrirDialogSucesso = () => {
         setOpenSucesso(true);
     };
 
+    // Dialog de fechamento caso o usuário cadastre com sucesso o funcionário
     const fecharDialogSucesso = () => {
         setOpenSucesso(false);
         const path = '/';
@@ -81,18 +78,38 @@ const CadastroFuncionario: React.FC = () => {
         history.push(path);
     };
 
+    // Dialog de abertura caso não esteja sendo possível conectar com as requests da API
     const abrirDialogFalhaBanco = () => {
         setOpenFalhaBanco(true);
     };
 
+    // Dialog de fechamento caso não esteja sendo possível conectar com as requests da API
     const fecharDialogFalhaBanco = () => {
         setOpenFalhaBanco(false);
     };
 
-    const realizarCadastro = () => {
+    /**
+      *  Será executado esse useEffect assim que for carregado a tela. Carregará a Data Atual, desta forma no campo de Data não permitirá que seja informado
+      *  uma data futura (pois o campo é para informar a data de nascimento)
+      */
+    useEffect(() => {
+        let newDate = new Date()
+        let date = newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
+        let month = newDate.getMonth() + 1 < 10 ? `0${newDate.getMonth() + 1}` : newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        setDataAtual(`${year}${'-'}${month < 10 ? `0${month}` : `${month}`}${'-'}${date}`);
+    }, []);
 
+    /**
+     * Função que será executada apenas quando o usuário clicar em 'Salvar Cadastro'. Será executado a requisição POST e salvar todos os campos do
+     * formulário
+     */
+    const realizarCadastro = () => {
         {
-            // Validação de todos os campos
+            /**
+             * Validação de todos os campos. Caso retorne com sucesso, disparar Dialog de sucesso, senão dialog de preencher dados. Se não for possível
+             * conectar em nenhum deles, cai para algum problema na request/banco 
+             */
             if (nome !== '' && endereco !== '' && salario !== '' && data !== '') {
                 axios.post('http://localhost:5005/api/funcionario/cadastrar/sucesso', {
                     nome: nome,
@@ -113,6 +130,7 @@ const CadastroFuncionario: React.FC = () => {
 
     }
 
+    // Renderização de todo formulário abaixo no return
     return (
         <Container>
             <HeaderContainer>
@@ -120,13 +138,12 @@ const CadastroFuncionario: React.FC = () => {
             </HeaderContainer>
 
             <Formulario>
-
                 {/* Inputs do formulário */}
                 <InputGroup error={nomeError} label="Nome">
-                    <Input value={nome} onChange={e => setNome((e.target.value))} placeholder="Carlos Eduardo de Almeida" />
+                    <Input value={nome} maxLength={70} onChange={e => setNome((e.target.value))} placeholder="Carlos Eduardo de Almeida" />
                 </InputGroup>
                 <InputGroup error={enderecoError} label="Endereço">
-                    <Input value={endereco} onChange={e => setEndereco((e.target.value))} placeholder="Rua Emílio Santana das Cruzes, 421" />
+                    <Input value={endereco} maxLength={70} onChange={e => setEndereco((e.target.value))} placeholder="Rua Emílio Santana das Cruzes, 421" />
                 </InputGroup>
                 <InputGroup error={salarioError} label="Salário">
                     <Input value={salario} onChange={e => setSalario((e.target.value))} type="number" min="0" step=".01" placeholder="1523,48" />
@@ -140,12 +157,12 @@ const CadastroFuncionario: React.FC = () => {
                 <InputGroup error={dataError} label="Data de Nascimento">
                     <Input type="date" max={dataAtual} value={data} onChange={e => setData((e.target.value))} />
                 </InputGroup>
-
+                {/* Botão para salvar cadastro */}
                 <ButtonContainer>
                     <Button onClick={realizarCadastro} intent="success">Salvar Cadastro</Button>
                 </ButtonContainer>
 
-                {/* Dialog para caso der o submit com sucesso */}
+                {/* Dialog para caso der o cadastro com sucesso */}
                 <DialogMU
                     open={openSucesso}
                     onClose={fecharDialogSucesso}
@@ -189,7 +206,6 @@ const CadastroFuncionario: React.FC = () => {
                     </DialogActions>
                 </DialogMU>
 
-
                 {/* Dialog para caso a API não esteja conectando para realizar as requisições */}
                 <DialogMU
                     open={openFalhaBanco}
@@ -211,8 +227,6 @@ const CadastroFuncionario: React.FC = () => {
                         </ButtonMU>
                     </DialogActions>
                 </DialogMU>
-
-
             </Formulario>
         </Container>
     );

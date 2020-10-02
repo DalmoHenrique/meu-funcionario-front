@@ -7,7 +7,7 @@ import backgroundImage from '../../assets/background-image.jpg';
      * MH = Main Header
      * AS = Aside
      * CT = Content
-    */
+*/
 
 export const Grid = styled.div`
 

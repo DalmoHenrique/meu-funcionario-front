@@ -10,6 +10,17 @@ export const Container = styled.div`
     }
 `;
 
+export const AsideContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: space-between;
+`;
+
+export const AsideHeader = styled.div`
+`;
+
 export const Header = styled.div`
     display: flex;
     justify-content: center;
@@ -21,7 +32,6 @@ export const Header = styled.div`
         margin-top: 10px;
         margin-left: 10px;
     }
-    /* align-items: center; */
 `;
 
 export const LogImg = styled.img`
@@ -32,17 +42,14 @@ export const LogImg = styled.img`
     cursor: pointer;
 `;
 
-export const AsideContent = styled.div`
+export const MenuOption = styled.div`
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    justify-content: space-between;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%; */
+    width: 250px;
+    height: 50px;
+    transition: all .3s;
+    &:hover{
+        background-color: #f1f3f5;
+    }
 `;
 
 export const AsideItemLink = styled.a`
@@ -50,42 +57,19 @@ export const AsideItemLink = styled.a`
     border-bottom: 1px solid #e1e1e1;
     text-decoration: none;
     width: 100%;
-
     > h3 {
-        
         font-weight: bold;
         color: ${props => props.theme.colors.secondary};
-
-
     }
-
     transition: all .3s;
-
     &:hover{
         background-color: #f1f3f5;
-    }
-
-    
+    }    
 `;
 
 export const Signature = styled.div`
+    margin-bottom: 20px;
     h6{
         color: ${props => props.theme.colors.black};
     }
-    margin-bottom: 20px;
-`;
-
-export const MenuOption = styled.div`
-    display: flex;
-    
-    width: 250px;
-    height: 50px;
-    transition: all .3s;
-
-    &:hover{
-        background-color: #f1f3f5;
-    }
-`;
-
-export const AsideHeader = styled.div`
 `;

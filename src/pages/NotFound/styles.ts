@@ -4,14 +4,6 @@ export const Container = styled.div`
 
 `;
 
-export const LinkItem = styled.a`
-    text-decoration: none;
-`;
-
-export const Content = styled.div`
-
-`;
-
 export const EmptyContent = styled.div`
     height: calc(100vh - 180px);
     display: flex;
@@ -24,12 +16,19 @@ export const EmptyDescription = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 43%;
-    height: 50%;
-    border: 2px solid #e1e1e1;
+    width: 80%;
+    height: 80%;
+
+    img{
+        width: 200px;
+    }
+
 `;
 
 export const TextPosition = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 70%;
     text-align: center;
     overflow-y: scroll;
@@ -43,6 +42,6 @@ export const TextPosition = styled.div`
         color: #585858;
         font-weight: 100;
         font-size: 16px;
-        
+        margin-left: 30px;        
     } 
 `;
