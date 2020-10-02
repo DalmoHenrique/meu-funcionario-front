@@ -26,7 +26,7 @@ const Aside: React.FC = () => {
                     </Header>
                     <MenuOption>
                         <AsideItemLink href="/cadastrar">
-                            <MenuList>
+                            <MenuList className="MenuList">
                                 <MenuItem contentBefore={<IconUser />}>
                                     Cadastrar
                                 </MenuItem>

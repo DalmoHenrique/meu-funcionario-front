@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
@@ -28,14 +28,23 @@ const CadastroFuncionario: React.FC = () => {
     const [enderecoError, setEnderecoError] = useState('');
     const [salario, setSalario] = useState('');
     const [salarioError, setSalarioError] = useState('');
-    const [genero, setGenero] = useState('');
+    const [genero, setGenero] = useState('Masculino');
     const [data, setData] = useState('');
+    const [dataAtual, setDataAtual] = useState('');
     const [dataError, setDataError] = useState('');
     const history = useHistory();
-
     const [openSucesso, setOpenSucesso] = useState(false);
     const [openFalha, setOpenFalha] = useState(false);
     const [openFalhaBanco, setOpenFalhaBanco] = useState(false);
+
+
+    useEffect(() => {
+        let newDate = new Date()
+        let date = newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
+        let month = newDate.getMonth() + 1 < 10 ? `0${newDate.getMonth() + 1}` : newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        setDataAtual(`${year}${'-'}${month < 10 ? `0${month}` : `${month}`}${'-'}${date}`);
+    }, []);
 
     const abrirDialogPreencherDados = () => {
         setOpenFalha(true);
@@ -129,7 +138,7 @@ const CadastroFuncionario: React.FC = () => {
                     </Select>
                 </InputGroup>
                 <InputGroup error={dataError} label="Data de Nascimento">
-                    <Input type="date" value={data} onChange={e => setData((e.target.value))} />
+                    <Input type="date" max={dataAtual} value={data} onChange={e => setData((e.target.value))} />
                 </InputGroup>
 
                 <ButtonContainer>

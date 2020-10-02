@@ -46,13 +46,14 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
     const [enderecoError, setEnderecoError] = useState('');
     const [salario, setSalario] = useState('');
     const [salarioError, setSalarioError] = useState('');
-    const [genero, setGenero] = useState('');
+    const [genero, setGenero] = useState('Masculino');
     const [data, setData] = useState('');
+    const [dataAtual, setDataAtual] = useState('');
     const [dataError, setDataError] = useState('');
     const history = useHistory();
-
     const [openSucessoAlteracao, setOpenSucessoAlteracao] = useState(false);
     const [openSucessoExclusao, setOpenSucessoExclusao] = useState(false);
+    const [openAlertDialogExclusao, setOpenAlertDialogExclusao] = useState(false);
     const [openFalha, setOpenFalha] = useState(false);
     const [openFalhaBanco, setOpenFalhaBanco] = useState(false);
 
@@ -93,8 +94,16 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
         history.push(path);
     };
 
-    const abrirDialogSucessoExclusao = () => {
-        setOpenSucessoExclusao(true);
+    const abrirAlertDialogExclusao = () => {
+        setOpenAlertDialogExclusao(true);
+    };
+
+    const fecharSucessoExclusao = () => {
+        setOpenSucessoExclusao(false);
+        const path = '/';
+        // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
+        console.log(history);
+        history.push(path);
     };
 
     const fecharDialogSucessoExclusao = () => {
@@ -102,10 +111,8 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
         {
             let url = `http://localhost:5005/api/funcionario/deletar/${id}`;
             axios.delete(url).then(resp => {
-                setOpenSucessoExclusao(false);
-                const path = '/';
-                // Fará com que volte para a tela inicial através deste useHistory do react-router-dom
-                history.push(path);
+                setOpenAlertDialogExclusao(false);
+                setOpenSucessoExclusao(true);
             }, (error) => {
                 abrirDialogFalhaBanco();
             });
@@ -115,7 +122,7 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
     };
 
     const fecharDialogCanceladoExclusao = () => {
-        setOpenSucessoExclusao(false);
+        setOpenAlertDialogExclusao(false);
     };
 
     const abrirDialogFalhaBanco = () => {
@@ -134,6 +141,12 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
             setFuncionario(r.data);
             console.log(r.data);
         })
+
+        let newDate = new Date()
+        let date = newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
+        let month = newDate.getMonth() + 1 < 10 ? `0${newDate.getMonth() + 1}` : newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        setDataAtual(`${year}${'-'}${month < 10 ? `0${month}` : `${month}`}${'-'}${date}`);
 
     }, []);
 
@@ -179,7 +192,7 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
     }
 
     const realizarExclusao = () => {
-        abrirDialogSucessoExclusao();
+        abrirAlertDialogExclusao();
     }
 
     return (
@@ -207,7 +220,7 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
                     </Select>
                 </InputGroup>
                 <InputGroup error={dataError} label="Data de Nascimento">
-                    <Input type="date" value={data} onChange={e => setData((e.target.value))} />
+                    <Input type="date" max={dataAtual} value={data} onChange={e => setData((e.target.value))} />
                 </InputGroup>
 
                 <ButtonContainer>
@@ -262,7 +275,7 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
 
                 {/* Dialog para questionar se realmente deseja excluir o funcionário */}
                 <DialogMU
-                    open={openSucessoExclusao}
+                    open={openAlertDialogExclusao}
                     onClose={fecharDialogCanceladoExclusao}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
@@ -281,6 +294,28 @@ const ConsultaFuncionario: React.FC<IRouteConsultaParams> = ({ match }) => {
                         </ButtonMU>
                         <ButtonMU onClick={fecharDialogCanceladoExclusao} color="primary" autoFocus>
                             Não
+                        </ButtonMU>
+                    </DialogActions>
+                </DialogMU>
+
+                {/* Dialog para caso der a exclusão com sucesso */}
+                <DialogMU
+                    open={openSucessoExclusao}
+                    onClose={fecharSucessoExclusao}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Sucesso!"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Exclusão realizada com sucesso
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <ButtonMU onClick={fecharSucessoExclusao} color="primary" autoFocus>
+                            OK
                         </ButtonMU>
                     </DialogActions>
                 </DialogMU>

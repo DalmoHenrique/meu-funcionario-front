@@ -4,6 +4,10 @@ export const Container = styled.div`
     grid-area: AS;
     color: ${props => props.theme.colors.white};
     background-color: ${props => props.theme.colors.gray}; 
+
+    .MenuList{
+        margin-left: 40px;
+    }
 `;
 
 export const Header = styled.div`
@@ -24,6 +28,7 @@ export const LogImg = styled.img`
     width: 60px;
     height: 60px;
     display: flex;
+    padding-top: 5px;
     cursor: pointer;
 `;
 
