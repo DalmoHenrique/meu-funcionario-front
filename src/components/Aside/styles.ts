@@ -27,7 +27,7 @@ export const Header = styled.div`
     align-items: center;
     margin-bottom: 100px;
     h3{
-        color: black;
+        color: ${props => props.theme.colors.info};
         font-size: 12px;
         margin-top: 10px;
         margin-left: 10px;
@@ -59,7 +59,7 @@ export const AsideItemLink = styled.a`
     width: 100%;
     > h3 {
         font-weight: bold;
-        color: ${props => props.theme.colors.secondary};
+        color: ${props => props.theme.colors.info};
     }
     transition: all .3s;
     &:hover{
@@ -70,6 +70,6 @@ export const AsideItemLink = styled.a`
 export const Signature = styled.div`
     margin-bottom: 20px;
     h6{
-        color: ${props => props.theme.colors.black};
+        color: ${props => props.theme.colors.info};
     }
 `;

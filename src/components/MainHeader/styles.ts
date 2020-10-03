@@ -17,9 +17,9 @@ export const Profile = styled.div`
 `;
 
 export const Welcome = styled.h3`
-    color: ${props => props.theme.colors.secondary};
+    color: ${props => props.theme.colors.info};
 `;
 
 export const Description = styled.span`
-    color: ${props => props.theme.colors.secondary};
+    color: ${props => props.theme.colors.info};
 `;
